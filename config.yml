@@ -1,0 +1,7 @@
+logging:
+  level: INFO
+  loggers:
+    name.smithjn: DEBUG
+
+template: Hello, %s!
+defaultName: Stranger
