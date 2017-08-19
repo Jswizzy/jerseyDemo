@@ -3,6 +3,8 @@ package name.smithjn;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import name.smithjn.health.TemplateHealthCheck;
+import name.smithjn.resources.HelloWorldResource;
 
 public class jerseyApplication extends Application<jerseyConfiguration> {
 
@@ -23,7 +25,17 @@ public class jerseyApplication extends Application<jerseyConfiguration> {
     @Override
     public void run(final jerseyConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+
+        final HelloWorldResource resource = new HelloWorldResource(
+                configuration.getTemplate(),
+                configuration.getDefaultName()
+        );
+
+        final TemplateHealthCheck healthCheck =
+                new TemplateHealthCheck(configuration.getTemplate());
+
+        environment.healthChecks().register("template", healthCheck);
+        environment.jersey().register(resource);
     }
 
 }
